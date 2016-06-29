@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+
 //Se define zona horaria
 date_default_timezone_set('America/Bogota');
 
@@ -13,8 +15,10 @@ include 'tmhOAuth.php';
  */
 $via = $_POST['via'];
 $estado = $_POST['estado'];
+$ubicacion = $_POST['ubicacion'];
 $causa = $_POST['causa'];
 $predefinido = $_POST['tweet'];
+$twitter_obras = "@obrasantioquia";
 
 //Valida que se hayan seleccionado los dos selects obligatorios o un mensaje predefinido
 if($predefinido == "" && ($via == "" ||  $estado == "")){ ?>
@@ -25,20 +29,30 @@ if($predefinido == "" && ($via == "" ||  $estado == "")){ ?>
 	//Se verifica si el mensaje es predefinido o es armado con los selects
 	if($predefinido){
 		//El mensaje sera el predefinido
-    	$mensaje = $predefinido." (".date('H:i').")";
+    	$mensaje = $predefinido.". ";
+    	// $mensaje = $predefinido." (".date('H:i').")";
 	}else{
 		//Se verifica si tiene causa
-	    if($causa){$causa = ", por ".$causa;}else{$causa = NULL;}
+	    if(strlen($causa) > 1){$causa = ", por ".$causa;}else{$causa = NULL;}
+
+	    // Se verifica que tenga ubicación
+	    if(strlen($ubicacion) > 1){$ubicacion = " a la altura ".$ubicacion." ";}else{$ubicacion = NULL;}
+	    
 	    //El mensaje sera el que traiga en los selects
-	    $mensaje = $via." ".$estado.$causa.". (".date('H:i').")";
+	    $mensaje = $via." ".$ubicacion.", ".$estado.$causa.". ";
+	    // $mensaje = $via." ".$ubicacion.$estado.$causa.". (".date('H:i').")";
 	}
 }
 
 //Se hace el conteo de los caracteres
 $caracteres = strlen($mensaje);
 
+if($caracteres <= 123){
+	$mensaje .= $twitter_obras;
+}
+
 //Se muestra un mensaje con la cantidad de caracteres
-echo "Este mensaje contiene ".$caracteres." caracteres. El mensaje es ".$mensaje;
+// echo "Este mensaje contiene ".$caracteres." caracteres. El mensaje es ".$mensaje;
 
 //Se almacena un arreglo con las llaves de la cuenta @johnarleycano para pruebas
 $twitter_johnarleycano = array(
@@ -57,15 +71,26 @@ $twitter_hatovial = array(
 );
 
 //Se inicializa
-$tmhOAuth = new tmhOAuth($twitter_johnarleycano);
+$tmhOAuth = new tmhOAuth($twitter_hatovial);
+// $tmhOAuth = new tmhOAuth($twitter_johnarleycano);
 
-//Se envia el mensaje
+// Se envia el mensaje
 $enviar = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), array(
 	'status' => $mensaje
 ));
+// echo $enviar;
 
-//Si la respuesta es 200
-if ($enviar == 200) {
+// Si no se envía
+if ($enviar != 200) {
+	?>
+	<script type="text/javascript">alert("El mensaje no se puede enviar. Contiene" + <?php echo $caracteres; ?> + " caracteres. Por favor pase este reporte al área de desarrollo.");</script>
+
+	<!--Se redirecciona la pagina-->
+	<meta http-equiv="Refresh" content="0; url=../../querys.php"/>
+	<?php
+
+	die();
+} else {
 	//Se envio bien el twit
     echo 'Mensaje enviado correctamente con '.$caracteres.' caracteres<br/>';
 
@@ -77,8 +102,5 @@ if ($enviar == 200) {
 	<!--Se redirecciona la pagina-->
 	<meta http-equiv="Refresh" content="0; url=../../querys.php"/>
 	<?php
-}else{
-	//No se envio
-    echo 'Ha ocurrido un error y no se ha podido enviar el mensaje: '.$enviar;
 }
 ?>

@@ -1,6 +1,9 @@
 <?php
 //date_default_timezone_set('America/Bogota');
 
+error_reporting(0);
+
+
 //Inicio la session, para verificar si el usuario esta logueado, de lo contrario se devuelve al index.php
 //session_start();
 
@@ -77,27 +80,40 @@ $mensaje15 = "Las vías del Aburrá Norte (Solla - Barbosa - Donmatías) present
                         <tr>
                             <td>
                                 <label>V&iacute;a*</label>
-                                <select name="via" onChange="deshabilitar()">
+                                <select name="via" onChange="deshabilitar()" style="width:80%;">
                                     <option value=""></option>
-                                    <option value="La vía Solla - Glorieta Niquía (Sentido Norte-Sur)">Solla - Glorieta Niqu&iacute;a Norte - Sur</option>
-                                    <option value="La vía Solla - Glorieta Niquía (Sentido Sur-Norte)">Solla - Glorieta Niqu&iacute;a Sur - Norte</option>
-                                    <option value="La vía Glorieta Niquía - La Frutera (Sentido Norte-Sur)">Glorieta Niqu&iacute;a - La Frutera Norte - Sur</option>
-                                    <option value="La vía Glorieta Niquía - La Frutera (Sentido Sur-Norte)">Glorieta Niqu&iacute;a - La Frutera Sur - Norte</option>
-                                    <option value="La vía La Frutera - Donmatías (Sentido Norte-Sur)">La Frutera - Donmat&iacute;as Norte - Sur</option>
-                                    <option value="La vía La Frutera - Donmatías (Sentido Sur-Norte)">La Frutera - Donmat&iacute;as Sur - Norte</option>
-                                    <option value="La vía Uniminuto - Copacabana (Sentido Norte-Sur)">Uniminuto - Copacabana Norte - Sur</option>
-                                    <option value="La vía Uniminuto - Copacabana (Sentido Sur-Norte)">Uniminuto - Copacabana Sur - Norte</option>
-                                    <option value="La vía Girardota - El Hatillo (Sentido Norte-Sur)">Girardota - El Hatillo Norte - Sur</option>
-                                    <option value="La vía Girardota - El Hatillo (Sentido Sur-Norte)">Girardota - El Hatillo Sur - Norte</option>
-                                    <option value="La vía El Hatillo - Barbosa (Sentido Norte-Sur)">El Hatillo - Barbosa Norte - Sur</option>
-                                    <option value="La vía El Hatillo - Barbosa (Sentido Sur-Norte)">El Hatillo - Barbosa Sur - Norte</option>
-                                    <option value="El intercambio vial El Hatillo - Barbosa (Sentido Norte-Sur)">Intercambio El Hatillo - Barbosa Norte - Sur</option>
-                                    <option value="El intercambio vial El Hatillo - Barbosa (Sentido Sur-Norte)">Intercambio El Hatillo - Barbosa Sur - Norte</option>
+                                    <option value="La vía Solla - Glorieta Niquía (N-S)">Solla - Glorieta Niqu&iacute;a Norte - Sur</option>
+                                    <option value="La vía Solla - Glorieta Niquía (S-N)">Solla - Glorieta Niqu&iacute;a Sur - Norte</option>
+                                    <option value="La vía Glorieta Niquía - La Frutera (N-S)">Glorieta Niqu&iacute;a - La Frutera Norte - Sur</option>
+                                    <option value="La vía Glorieta Niquía - La Frutera (S-N)">Glorieta Niqu&iacute;a - La Frutera Sur - Norte</option>
+                                    <option value="La vía La Frutera - Donmatías (N-S)">La Frutera - Donmat&iacute;as Norte - Sur</option>
+                                    <option value="La vía La Frutera - Donmatías (S-N)">La Frutera - Donmat&iacute;as Sur - Norte</option>
+                                    <option value="La vía Uniminuto - Copacabana (N-S)">Uniminuto - Copacabana Norte - Sur</option>
+                                    <option value="La vía Uniminuto - Copacabana (S-N)">Uniminuto - Copacabana Sur - Norte</option>
+                                    <option value="La vía Girardota - El Hatillo (N-S)">Girardota - El Hatillo Norte - Sur</option>
+                                    <option value="La vía Girardota - El Hatillo (S-N)">Girardota - El Hatillo Sur - Norte</option>
+                                    <option value="La vía El Hatillo - Barbosa (N-S)">El Hatillo - Barbosa Norte - Sur</option>
+                                    <option value="La vía El Hatillo - Barbosa (S-N)">El Hatillo - Barbosa Sur - Norte</option>
+                                    <option value="El intercambio El Hatillo - Barbosa (N-S)">Intercambio El Hatillo - Barbosa Norte - Sur</option>
+                                    <option value="El intercambio El Hatillo - Barbosa (S-N)">Intercambio El Hatillo - Barbosa Sur - Norte</option>
+                                </select>
+                            </td>
+                            <td>
+                                <label>Ubicación</label>
+                                <select name="ubicacion" style="width:40%;">
+                                    <option value=""></option>
+                                    <?php
+                                    $sql_ubicaciones = "SELECT * FROM tbl_ubicaciones AS u ORDER BY u.nombre ASC";
+                                    $resultado = mysql_query($sql_ubicaciones,$link);
+                                    while($ubicacion = mysql_fetch_assoc($resultado)){
+                                        echo "<option value='".$ubicacion["prefijo"]." ".utf8_encode($ubicacion["nombre"])."'>".utf8_encode($ubicacion["nombre"])."</option>";
+                                    }
+                                    ?>
                                 </select>
                             </td>
                             <td>
                                 <label>Estado*</label>
-                                <select name="estado" onChange="deshabilitar()">
+                                <select name="estado" onChange="deshabilitar()" style="width:60%;">
                                     <option value=""></option>
                                     <option value="no presenta ninguna novedad">Sin Novedad</option>
                                     <option value="presenta movilidad fluída">Movilidad Flu&iacute;da</option>
@@ -109,21 +125,19 @@ $mensaje15 = "Las vías del Aburrá Norte (Solla - Barbosa - Donmatías) present
                             </td>
                             <td>
                                 <label>Causa(Opcional)</label>
-                                <select name="causa" onChange="deshabilitar()">
+                                <select name="causa" onChange="deshabilitar()" style="width:60%;">
                                     <option value=""></option>
-                                    <option value="incidente de tránsito">Incidente de tr&aacute;nsito</option>
                                     <option value="accidente de tránsito">Accidente de Tr&aacute;nsito</option>
                                     <option value="alto flujo vehicular">Alto Flujo Vehicular</option>
-                                    <option value="trabajos en la vía">Trabajos en la V&iacute;a</option>
-                                    <option value="realización de evento público">Evento P&uacute;blico</option>
-                                    <option value="manifestación pública">Manifestaci&oacute;n P&uacute;blica</option>
                                     <option value="realización de ciclovía">Ciclov&iacute;a</option>
                                     <option value="condiciones de lluvia">Condici&oacute;n Lluviosa</option>
-                                    <option value="rehabilitación de vía">Rehabilitaci&oacute;n de v&iacute;a</option>
+                                    <option value="realización de evento público">Evento P&uacute;blico</option>
+                                    <option value="incidente de tránsito">Incidente de tr&aacute;nsito</option>
+                                    <option value="manifestación pública">Manifestaci&oacute;n P&uacute;blica</option>
                                     <option value="pavimentación de vía">Pavimentaci&oacute;n de v&iacute;a</option>
-                                    <option value="trabajos de modernización del peaje Niquía">Trabajos en el peaje Niquía</option>
-                                    <option value="congestión en el Peaje Niquía">Congestión en Peaje Niquía</option>
-                                    <option value="congestión en el Peaje Trapiche">Congestión en Peaje Trapiche</option>
+                                    <option value="rehabilitación de vía">Rehabilitaci&oacute;n de v&iacute;a</option>
+                                    <option value="trabajos de modernización del peaje Niquía">Trabajos de obra</option>
+                                    <option value="trabajos en la vía">Trabajos en la V&iacute;a</option>
                                 </select>
                             </td>
                         </tr>

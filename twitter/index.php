@@ -138,6 +138,7 @@ $mensaje15 = "Las vías del Aburrá Norte (Solla - Barbosa - Donmatías) present
                                     <option value="rehabilitación de vía">Rehabilitaci&oacute;n de v&iacute;a</option>
                                     <option value="trabajos de modernización del peaje Niquía">Trabajos de obra</option>
                                     <option value="trabajos en la vía">Trabajos en la V&iacute;a</option>
+                                    <option value="deslizamiento de tierra">Deslizamiento de tierra</option>
                                 </select>
                             </td>
                         </tr>

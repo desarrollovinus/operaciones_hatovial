@@ -18,7 +18,7 @@ $estado = $_POST['estado'];
 $ubicacion = $_POST['ubicacion'];
 $causa = $_POST['causa'];
 $predefinido = $_POST['tweet'];
-$twitter_obras = "@obrasantioquia";
+$twitter_obras = " @obrasantioquia";
 
 //Valida que se hayan seleccionado los dos selects obligatorios o un mensaje predefinido
 if($predefinido == "" && ($via == "" ||  $estado == "")){ ?>
@@ -44,9 +44,11 @@ if($predefinido == "" && ($via == "" ||  $estado == "")){ ?>
 	}
 }
 
-//Se hace el conteo de los caracteres
-$caracteres = strlen($mensaje);
+$mensaje .= "(".date('H:i').")";
 
+//Se hace el conteo de los caracteres
+$caracteres = strlen($mensaje)." ";
+ 
 if($caracteres <= 123){
 	$mensaje .= $twitter_obras;
 }
@@ -83,7 +85,7 @@ $enviar = $tmhOAuth->request('POST', $tmhOAuth->url('1.1/statuses/update'), arra
 // Si no se envía
 if ($enviar != 200) {
 	?>
-	<script type="text/javascript">alert("El mensaje no se puede enviar. Contiene" + <?php echo $caracteres; ?> + " caracteres. Por favor pase este reporte al área de desarrollo.");</script>
+	<script type="text/javascript">alert("El mensaje no se puede enviar. Contiene " + <?php echo $caracteres; ?> + " caracteres. Por favor pase este reporte al área de desarrollo.");</script>
 
 	<!--Se redirecciona la pagina-->
 	<meta http-equiv="Refresh" content="0; url=../../querys.php"/>

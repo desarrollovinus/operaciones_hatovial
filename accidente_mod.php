@@ -64,7 +64,7 @@ $id_parte=$_SESSION["id_parte"];
     <body>
         <?php
         // Consultas SQL para mostrar la información ya antes guardada y modificarla.
-        $consulta="SELECT * FROM tbl_accidente LEFT JOIN tbl_parte ON tbl_accidente.id_parte = tbl_parte.id_parte where tbl_parte.id_parte = '$id_parte'";
+        $consulta="SELECT *, tbl_accidente.ambulancia AS existe_ambulancia FROM tbl_accidente LEFT JOIN tbl_parte ON tbl_accidente.id_parte = tbl_parte.id_parte where tbl_parte.id_parte = '$id_parte'";
         $resul= mysql_query($consulta,$link);
         $row = mysql_fetch_array($resul);
 
@@ -360,12 +360,13 @@ $id_parte=$_SESSION["id_parte"];
                     <div class="titulo_serv"><b>TIPO DE SERVICIO PRESENTE PARA LA ATENCION</b></div>
                     <div class="bloque2">
                         <div class="texto_serv">Ambulancia:</div>
-                        <?php if($row["ambulancia"]=='X'){ ?>
+                        <?php if($row["existe_ambulancia"]=='X'){ ?>
                         <div class="check_serv"><input type="checkbox" id="amb" name="amb" value="X" class="checks1" checked></div>
                         <?php } ?>
-                        <?php if($row["ambulancia"]==''){ ?>
+                        <?php if($row["existe_ambulancia"]==''){ ?>
                         <div class="check_serv"><input type="checkbox" id="amb" name="amb" value="X" class="checks1" ></div>
                         <?php } ?>
+
                         <div class="texto_serv">Bomberos:</div>
                         <?php if($row["bomberos"]=='X'){ ?>
                         <div class="check_serv"><input type="checkbox" id="bom" name="bom" value="X" class="checks1" checked ></div>
